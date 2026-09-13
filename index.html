@@ -41,14 +41,22 @@
     box-shadow: 0 18px 60px rgba(0,0,0,.10);
     isolation: isolate;
     background:
-      linear-gradient(rgba(4,12,22,.20), rgba(9,8,8,.18)),
-      url("retirement-background.png") center center / cover no-repeat,
-      linear-gradient(180deg, #18334d 0%, #ef8b4f 62%, #132c3c 100%);
+      radial-gradient(circle at 28% 42%, rgba(255,214,107,.88) 0 8%, transparent 27%),
+      linear-gradient(180deg,
+        #eba979 0%,
+        #f6bc84 20%,
+        #f9c477 38%,
+        #f69068 63%,
+        #c96e55 76%,
+        #80635a 78%,
+        #6d5a55 82%,
+        #c98a63 88%,
+        #a85e4c 100%);
   }
 
   /* Soft ocean / horizon */
   .frame::before {
-    content: none;
+    content: "";
     position: absolute;
     inset: 70% -8% -8% -8%;
     z-index: -2;
@@ -76,7 +84,6 @@
   }
 
   .palm-left, .palm-right {
-    display: none;
     position: absolute;
     top: -8%;
     width: 33%;
