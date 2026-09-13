@@ -1,692 +1,101 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Joe's Retirement Countdown</title>
-<meta name="description" content="Countdown to Joe's retirement — Thursday, December 10, 2026 at noon Central." />
+<meta name="description" content="Joe's retirement countdown — Thursday, December 10, 2026 at noon Central.">
 <style>
-  :root {
-    --text: #fffdf8;
-    --muted: rgba(255,255,255,.92);
-    --card: rgba(84, 52, 39, .34);
-    --card-border: rgba(255,255,255,.08);
-    --shadow: 0 22px 70px rgba(45,18,8,.30);
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body { height: 100%; }
-
-  body {
-    margin: 0;
-    display: grid;
-    place-items: center;
-    min-height: 100vh;
-    padding: clamp(14px, 2.1vw, 30px);
-    color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background:
-      radial-gradient(circle at 50% 16%, rgba(255,255,255,.65), transparent 20%),
-      linear-gradient(180deg, #fffdf9 0%, #f6f4f1 100%);
-  }
-
-  .frame {
-    position: relative;
-    width: min(96vw, 1600px);
-    aspect-ratio: 16 / 9;
-    min-height: 620px;
-    overflow: hidden;
-    border-radius: clamp(22px, 2.4vw, 40px);
-    box-shadow: 0 18px 60px rgba(0,0,0,.10);
-    isolation: isolate;
-    background-image: url("retirement-background.png");
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-  }
-
-  /* Background image provides the ocean, deck, palms, chair, and sunset. */
-  .frame::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background: rgba(0,0,0,.03);
-    pointer-events: none;
-  }
-
-  /* Subtle overlay keeps white text readable without hiding the scenery. */
-  .frame::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: linear-gradient(180deg, rgba(2,12,24,.12), rgba(18,8,2,.16));
-    pointer-events: none;
-  }
-
-  .palm-left, .palm-right { display: none; }
-
-  .palm-left { left: -3%; transform: rotate(-7deg); }
-  .palm-right { right: -3%; transform: scaleX(-1) rotate(-7deg); }
-
-  .leaf {
-    position: absolute;
-    left: 3%;
-    top: 2%;
-    width: 78%;
-    height: 16%;
-    border-radius: 100% 0 100% 0;
-    transform-origin: 0 50%;
-    background: linear-gradient(90deg, rgba(27,20,15,.97), rgba(32,23,18,.82) 70%, rgba(41,28,20,.25));
-  }
-  .leaf:nth-child(1){ transform: rotate(8deg) scaleX(1.05); }
-  .leaf:nth-child(2){ transform: rotate(20deg) translateY(9px) scaleX(.98); }
-  .leaf:nth-child(3){ transform: rotate(32deg) translateY(15px) scaleX(.89); }
-  .leaf:nth-child(4){ transform: rotate(44deg) translateY(21px) scaleX(.78); }
-  .leaf:nth-child(5){ transform: rotate(57deg) translateY(26px) scaleX(.70); }
-  .leaf:nth-child(6){ transform: rotate(70deg) translateY(30px) scaleX(.60); }
-
-  .content {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    text-align: center;
-    /* Leave the cinematic title baked into the background fully visible. */
-    padding: clamp(220px, 25.5vh, 270px) clamp(22px, 5vw, 90px) clamp(22px, 3vh, 38px);
-  }
-
-  .icon {
-    font-size: clamp(42px, 4.7vw, 76px);
-    line-height: 1;
-    margin-bottom: clamp(12px, 1.6vh, 22px);
-    filter: drop-shadow(0 2px 1px rgba(0,0,0,.16));
-  }
-
-  h1 {
-    margin: 0 0 clamp(34px, 4.5vh, 58px);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(42px, 6.2vw, 96px);
-    line-height: .98;
-    font-weight: 700;
-    letter-spacing: -.025em;
-    text-shadow: 0 2px 16px rgba(76,35,23,.20);
-  }
-
-  .countdown {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(10px, 1.05vw, 18px);
-    width: min(820px, 84%);
-    margin-bottom: clamp(14px, 2vh, 20px);
-  }
-
-  .unit {
-    width: clamp(132px, 12vw, 185px);
-    height: clamp(112px, 12.5vh, 145px);
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: clamp(14px, 1.2vw, 20px);
-    background: linear-gradient(180deg, rgba(10,20,31,.60), rgba(31,24,27,.60));
-    border: 1px solid rgba(255,255,255,.23);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 8px 22px rgba(0,0,0,.18);
-    backdrop-filter: blur(4px);
-  }
-
-  .num {
-    font-weight: 800;
-    font-size: clamp(48px, 4.8vw, 72px);
-    line-height: .92;
-    letter-spacing: -.045em;
-    font-variant-numeric: tabular-nums;
-    text-shadow: 0 2px 12px rgba(0,0,0,.24);
-  }
-
-  .label {
-    margin-top: clamp(9px, 1.2vh, 14px);
-    font-size: clamp(11px, .95vw, 15px);
-    letter-spacing: .16em;
-    font-weight: 700;
-  }
-
-  .colon { display: none; }
-
-
-  .outlook-panel {
-    width: min(880px, 88%);
-    margin: 0 auto clamp(10px, 1.3vh, 15px);
-    padding: clamp(12px, 1.4vh, 17px) clamp(18px, 2vw, 26px);
-    border-radius: clamp(15px, 1.4vw, 21px);
-    background: rgba(13,18,27,.55);
-    border: 1px solid rgba(255,255,255,.18);
-    box-shadow: 0 10px 28px rgba(0,0,0,.15);
-    backdrop-filter: blur(5px);
-  }
-
-  .outlook-label {
-    margin: 0 0 7px;
-    font-size: clamp(10px, .9vw, 14px);
-    font-weight: 700;
-    letter-spacing: .24em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.80);
-    text-shadow: 0 2px 10px rgba(76,35,23,.20);
-  }
-
-  .milestones {
-    width: min(920px, 88%);
-    margin: clamp(12px, 1.6vh, 18px) auto 0;
-  }
-
-  .milestone-track {
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    align-items: start;
-  }
-
-  .milestone-track::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 8%;
-    right: 8%;
-    height: 2px;
-    background: rgba(255,255,255,.36);
-    z-index: 0;
-  }
-
-  .milestone {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    color: rgba(255,255,255,.66);
-    transition: color .25s ease, transform .25s ease;
-  }
-
-  .milestone-dot {
-    width: 20px;
-    height: 20px;
-    margin: 0 auto 9px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,.72);
-    background: rgba(92,55,43,.62);
-    box-shadow: 0 0 0 4px rgba(255,255,255,.05);
-    transition: all .25s ease;
-  }
-
-  .milestone-title {
-    font-size: clamp(9px, .78vw, 12px);
-    font-weight: 800;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-  }
-
-  .milestone-copy {
-    margin-top: 4px;
-    font-size: clamp(8px, .72vw, 11px);
-    line-height: 1.25;
-  }
-
-  .milestone.active {
-    color: rgba(255,255,255,.98);
-    transform: translateY(-1px);
-  }
-
-  .milestone.active .milestone-dot {
-    background: #f6c453;
-    border-color: rgba(255,255,255,.95);
-    box-shadow: 0 0 0 5px rgba(246,196,83,.18), 0 0 24px rgba(246,196,83,.55);
-  }
-
-  .milestone.passed .milestone-dot {
-    background: rgba(255,255,255,.86);
-    border-color: rgba(255,255,255,.98);
-  }
-
-  .tagline {
-    margin: clamp(10px, 1.3vh, 14px) 0 0;
-    font-size: clamp(11px, 1.05vw, 16px);
-    font-weight: 700;
-    letter-spacing: .23em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,.76);
-    text-shadow: 0 2px 10px rgba(76,35,23,.18);
-  }
-
-  .subtitle {
-    max-width: 100%;
-    min-height: 1.25em;
-    margin: 0;
-    font-size: clamp(19px, 1.75vw, 28px);
-    line-height: 1.15;
-    font-weight: 400;
-    letter-spacing: -.018em;
-    text-shadow: 0 2px 12px rgba(76,35,23,.22);
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity .45s ease, transform .45s ease;
-  }
-
-  .subtitle.changing {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  .date {
-    margin: 0;
-    font-size: clamp(17px, 1.45vw, 24px);
-    font-style: italic;
-    font-weight: 400;
-    line-height: 1.15;
-    color: var(--muted);
-    text-shadow: 0 2px 10px rgba(76,35,23,.20);
-  }
-
-  .finished {
-    display: none;
-    width: min(1050px, 92%);
-    padding: clamp(26px, 4vw, 48px);
-    border-radius: 26px;
-    background: rgba(83,42,29,.38);
-    backdrop-filter: blur(4px);
-    text-align: center;
-    box-shadow: 0 18px 50px rgba(64,30,20,.18);
-  }
-  .finished .retired-title {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(48px, 7vw, 104px);
-    font-weight: 700;
-    line-height: .95;
-    margin-bottom: 18px;
-  }
-  .finished .closed {
-    font-size: clamp(21px, 2.5vw, 38px);
-    font-weight: 700;
-    letter-spacing: .02em;
-    margin-bottom: 22px;
-  }
-  .finished .fine-print {
-    font-size: clamp(16px, 1.55vw, 24px);
-    line-height: 1.35;
-    margin: 0 auto 20px;
-    max-width: 900px;
-  }
-  .finished .anyone-else {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(27px, 3.3vw, 50px);
-    font-weight: 700;
-    margin: 14px 0 18px;
-  }
-  .finished .left-chat {
-    font-size: clamp(18px, 2vw, 30px);
-    font-weight: 600;
-    opacity: .95;
-  }
-
-  .tiny-note {
-    position: absolute;
-    right: 18px;
-    bottom: 12px;
-    font-size: 11px;
-    opacity: .0;
-    user-select: none;
-  }
-
-
-
-  /* The normal title is baked into the cinematic background. */
-  .dynamic-title { display: none; }
-  .stage-final .dynamic-title { display: block; }
-
-  /* Automatic personality shifts as retirement approaches */
-  .stage-banner {
-    min-height: 1.2em;
-    margin: -8px 0 10px;
-    font-size: clamp(11px, 1vw, 15px);
-    font-weight: 800;
-    letter-spacing: .20em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0);
-    transition: color .5s ease, transform .5s ease;
-    transform: translateY(-4px);
-  }
-
-  .frame.stage-30 .stage-banner,
-  .frame.stage-10 .stage-banner,
-  .frame.stage-5 .stage-banner,
-  .frame.stage-final .stage-banner {
-    color: rgba(255,255,255,.84);
-    transform: translateY(0);
-  }
-
-  .frame.stage-30 .unit {
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 30px rgba(75,40,30,.10), 0 0 0 1px rgba(246,196,83,.13);
-  }
-
-  .frame.stage-10 .unit {
-    background: linear-gradient(180deg, rgba(108,78,45,.39), rgba(112,55,36,.48));
-    border-color: rgba(255,214,119,.17);
-  }
-  .frame.stage-10 .tagline { color: rgba(255,244,210,.88); }
-
-  .frame.stage-5 .unit {
-    background: linear-gradient(180deg, rgba(112,70,39,.46), rgba(120,51,34,.56));
-    border-color: rgba(255,196,112,.24);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 12px 34px rgba(89,34,21,.16), 0 0 25px rgba(246,165,83,.06);
-  }
-  .frame.stage-5 .outlook-label,
-  .frame.stage-5 .stage-banner { color: rgba(255,234,195,.95); }
-
-  .frame.stage-final {
-    background:
-      radial-gradient(circle at 28% 42%, rgba(255,214,107,.90) 0 8%, transparent 27%),
-      linear-gradient(180deg, #e89f72 0%, #f3b378 20%, #f5b66c 38%, #f0805d 63%, #b95c49 76%, #6d5651 78%, #5e504e 82%, #b87859 88%, #945040 100%);
-  }
-  .frame.stage-final .unit {
-    border-color: rgba(255,219,150,.34);
-    background: linear-gradient(180deg, rgba(82,45,31,.58), rgba(87,34,29,.68));
-    animation: finalPulse 2.4s ease-in-out infinite;
-  }
-  .frame.stage-final h1 {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    font-weight: 900;
-    letter-spacing: .035em;
-  }
-  .frame.stage-final .stage-banner {
-    color: #fff2c9;
-    text-shadow: 0 0 18px rgba(255,197,95,.26);
-  }
-  .frame.stage-final .tagline {
-    color: #fff5d9;
-    letter-spacing: .28em;
-  }
-
-  @keyframes finalPulse {
-    0%, 100% { transform: translateY(0); box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 10px 30px rgba(71,25,18,.14), 0 0 0 rgba(255,191,87,0); }
-    50% { transform: translateY(-2px); box-shadow: inset 0 1px 0 rgba(255,255,255,.11), 0 13px 36px rgba(71,25,18,.20), 0 0 24px rgba(255,191,87,.15); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .frame.stage-final .unit { animation: none; }
-    .subtitle, .stage-banner { transition: none; }
-  }
-
-  @media (max-width: 900px) {
-    body { padding: 0; background: #ce7657; }
-    .frame {
-      width: 100vw;
-      min-height: 100vh;
-      aspect-ratio: auto;
-      border-radius: 0;
-    }
-    .content { padding: 190px 14px 28px; }
-    .countdown { width: 94%; gap: 7px; }
-    .unit { width: 22vw; height: 122px; }
-    .label { letter-spacing: .08em; }
-    .palm-left, .palm-right { width: 48%; height: 34%; }
-  }
-
-  @media (max-width: 560px) {
-    h1 { margin-bottom: 30px; }
-    .icon { margin-bottom: 10px; }
-    .countdown { gap: 4px; }
-    .content { padding-top: 155px; }
-    .unit { height: 96px; border-radius: 13px; }
-    .num { font-size: clamp(34px, 11vw, 54px); }
-    .label { margin-top: 8px; font-size: clamp(9px, 2.7vw, 12px); }
-    .subtitle { max-width: 100%; font-size: clamp(16px, 4.6vw, 22px); }
-    .outlook-panel { width: 96%; padding: 10px 12px; }
-    .milestones { width: 98%; }
-    .milestone-copy { display: none; }
-    .milestone-track { gap: 3px; }
-    .tagline { letter-spacing: .14em; }
-  }
+:root{--text:#fffdf8;--gold:#f5bd62;--glass:rgba(8,16,27,.63);--border:rgba(255,255,255,.22)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{display:grid;place-items:center;overflow:hidden;background:#07111e;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--text)}
+.frame{position:relative;width:min(100vw,calc(100vh * 16 / 9));height:min(100vh,calc(100vw * 9 / 16));aspect-ratio:16/9;overflow:hidden;isolation:isolate;container-type:inline-size;background:url("retirement-background-v9.png") center/100% 100% no-repeat;box-shadow:0 0 80px rgba(0,0,0,.45)}
+.frame:after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.08));pointer-events:none}
+/* Static V9 edits layered onto the original cinematic art so the dynamic UI remains live. */
+.cinematic-subtitle{position:absolute;z-index:2;left:26.2%;top:29.2%;width:47.6%;height:5.1%;display:flex;align-items:center;justify-content:center;background:rgba(8,24,43,.72);border-radius:.5cqw;box-shadow:0 0 1.3cqw rgba(8,24,43,.75);font-size:1.72cqw;font-weight:800;letter-spacing:.13em;text-transform:uppercase;text-shadow:0 .12cqw .35cqw #000}
+.chair-edit{position:absolute;z-index:2;left:6.8%;top:64.7%;width:10.9%;height:17.2%;transform:rotate(-5deg);display:flex;flex-direction:column;justify-content:center;gap:.52cqw;padding:.6cqw .25cqw;background:rgba(40,21,11,.83);border-radius:.45cqw;box-shadow:0 0 1.2cqw rgba(36,16,7,.55);font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:.92cqw;letter-spacing:.06em;line-height:1.02;text-align:center;color:#f4bd69;text-shadow:0 .08cqw .2cqw #000}
+.tumbler-edit{position:absolute;z-index:3;left:32.45%;top:75.0%;width:4.1%;height:6.0%;display:grid;place-items:center;background:rgba(35,31,29,.92);border-radius:.25cqw;transform:rotate(-.5deg)}
+.tumbler-edit svg{width:88%;height:72%;filter:drop-shadow(0 .05cqw .08cqw #000)}
+.ui{position:absolute;z-index:4;inset:0;text-align:center}
+.dynamic-title{display:none;position:absolute;left:20%;right:20%;top:33.8%;margin:0;font-size:3.1cqw;font-weight:900;letter-spacing:.055em;text-shadow:0 .18cqw .65cqw #000}
+.stage-banner{position:absolute;left:15%;right:15%;top:36.7%;min-height:1.2em;font-size:.78cqw;font-weight:800;letter-spacing:.2em;color:transparent;text-transform:uppercase;text-shadow:0 .12cqw .35cqw #000}
+.countdown{position:absolute;left:24%;top:39.4%;width:52%;display:flex;justify-content:center;gap:1.0cqw}
+.unit{width:11.7cqw;height:8.8cqw;border-radius:1.0cqw;background:linear-gradient(180deg,rgba(8,18,31,.68),rgba(28,22,26,.68));border:.07cqw solid var(--border);box-shadow:inset 0 .07cqw 0 rgba(255,255,255,.08),0 .5cqw 1.3cqw rgba(0,0,0,.25);backdrop-filter:blur(.22cqw);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.num{font-size:4.45cqw;font-weight:800;line-height:.9;letter-spacing:-.04em;font-variant-numeric:tabular-nums;text-shadow:0 .15cqw .55cqw rgba(0,0,0,.45)}
+.label{margin-top:.65cqw;font-size:.78cqw;font-weight:800;letter-spacing:.14em}
+.outlook-panel{position:absolute;left:22%;top:50.1%;width:56%;min-height:8.1cqw;padding:1.0cqw 1.5cqw;border-radius:1.05cqw;background:rgba(8,17,29,.61);border:.07cqw solid rgba(255,255,255,.2);box-shadow:0 .55cqw 1.6cqw rgba(0,0,0,.22);backdrop-filter:blur(.28cqw);display:flex;flex-direction:column;justify-content:center}
+.outlook-label{margin:0 0 .52cqw;font-size:.72cqw;font-weight:800;letter-spacing:.24em;color:rgba(255,255,255,.8);text-transform:uppercase}
+.subtitle{margin:0;min-height:2.4em;font-size:1.48cqw;line-height:1.18;text-shadow:0 .12cqw .4cqw #000;transition:opacity .4s ease,transform .4s ease}.subtitle.changing{opacity:0;transform:translateY(.4cqw)}
+.date{position:absolute;left:30%;right:30%;top:59.8%;margin:0;font-size:1.18cqw;font-style:italic;text-shadow:0 .12cqw .4cqw #000}
+.milestones{position:absolute;left:19%;top:64.1%;width:62%}.milestone-track{position:relative;display:grid;grid-template-columns:repeat(5,1fr);gap:.6cqw}.milestone-track:before{content:"";position:absolute;top:.62cqw;left:8%;right:8%;height:.12cqw;background:rgba(255,255,255,.38)}
+.milestone{position:relative;color:rgba(255,255,255,.64);transition:.25s}.milestone-dot{width:1.25cqw;height:1.25cqw;margin:0 auto .48cqw;border-radius:50%;border:.13cqw solid rgba(255,255,255,.72);background:rgba(92,55,43,.75);box-shadow:0 0 0 .24cqw rgba(255,255,255,.05)}.milestone-title{font-size:.68cqw;font-weight:800;letter-spacing:.08em}.milestone-copy{margin-top:.25cqw;font-size:.61cqw;line-height:1.22}.milestone.active{color:#fff;transform:translateY(-.08cqw)}.milestone.active .milestone-dot{background:#f6c453;border-color:#fff;box-shadow:0 0 0 .3cqw rgba(246,196,83,.18),0 0 1.4cqw rgba(246,196,83,.6)}.milestone.passed .milestone-dot{background:rgba(255,255,255,.9);border-color:#fff}
+.tagline{position:absolute;left:25%;right:25%;top:78.6%;margin:0;font-size:.93cqw;font-weight:800;letter-spacing:.24em;color:rgba(255,255,255,.88);text-transform:uppercase;text-shadow:0 .12cqw .45cqw #000}
+.finished{display:none;position:absolute;z-index:10;left:13%;top:22%;width:74%;padding:3.0cqw 4cqw 2.6cqw;border-radius:1.6cqw;background:linear-gradient(180deg,rgba(7,17,29,.83),rgba(35,22,22,.76));border:.08cqw solid rgba(255,255,255,.2);box-shadow:0 1.4cqw 4cqw rgba(0,0,0,.42);backdrop-filter:blur(.4cqw);text-align:center}.retired-title{font-family:Georgia,"Times New Roman",serif;font-size:6.1cqw;font-weight:800;line-height:.9;color:#f8d08a;text-shadow:0 .18cqw .8cqw #000;margin-bottom:1.15cqw}.closed{font-size:1.65cqw;font-weight:900;letter-spacing:.08em;margin-bottom:1.4cqw}.fine-print{font-size:1.15cqw;line-height:1.38;max-width:58cqw;margin:0 auto 1.2cqw;color:rgba(255,255,255,.9)}.anyone-else{font-family:Georgia,"Times New Roman",serif;font-size:2.25cqw;font-weight:800;margin:.8cqw 0 1.25cqw}.left-building{font-family:"Segoe Script","Bradley Hand",cursive;font-size:2.05cqw;font-style:italic;color:#f8d08a;margin:.4cqw 0 1.05cqw;transform:rotate(-1deg)}.final-status{font-size:1.02cqw;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.9)}
+.frame.stage-30 .stage-banner,.frame.stage-10 .stage-banner,.frame.stage-5 .stage-banner,.frame.stage-final .stage-banner{color:rgba(255,255,255,.9)}.frame.stage-10 .unit{border-color:rgba(255,214,119,.3)}.frame.stage-5 .unit{border-color:rgba(255,196,112,.38)}.frame.stage-final .dynamic-title{display:block}.frame.stage-final .cinematic-subtitle{opacity:.12}.frame.stage-final .countdown{top:42.0%}.frame.stage-final .stage-banner{top:38.1%;color:#fff2c9}.frame.stage-final .unit{animation:finalPulse 2.4s ease-in-out infinite;border-color:rgba(255,219,150,.45)}
+@keyframes finalPulse{50%{transform:translateY(-.12cqw);box-shadow:0 .8cqw 2cqw rgba(0,0,0,.28),0 0 1.3cqw rgba(255,191,87,.18)}}
+@media(prefers-reduced-motion:reduce){.unit,.subtitle{animation:none!important;transition:none!important}}
+@media(max-aspect-ratio:4/5){body{overflow:auto}.frame{width:100vw;height:56.25vw;min-height:0;margin:auto}}
 </style>
 </head>
 <body>
-  <main id="frame" class="frame" role="main" aria-label="Joe's retirement countdown">
-    <div class="palm-left" aria-hidden="true">
-      <i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i>
+<main id="frame" class="frame" aria-label="Joe's retirement countdown">
+  <div class="cinematic-subtitle">34 YEARS. THAT’LL DO.</div>
+  <div class="chair-edit"><span>NO EMAILS</span><span>NO MEETINGS</span><span>NO ACTION ITEMS</span><span>NO PROBLEM</span></div>
+  <div class="tumbler-edit" aria-label="Musical notes">
+    <svg viewBox="0 0 100 58" aria-hidden="true"><g stroke="#f4f4f4" stroke-width="2" opacity=".92"><line x1="6" y1="10" x2="94" y2="10"/><line x1="6" y1="20" x2="94" y2="20"/><line x1="6" y1="30" x2="94" y2="30"/><line x1="6" y1="40" x2="94" y2="40"/><line x1="6" y1="50" x2="94" y2="50"/></g><g fill="#f4f4f4" stroke="#f4f4f4" stroke-width="2"><ellipse cx="18" cy="45" rx="7" ry="5" transform="rotate(-18 18 45)"/><line x1="24" y1="44" x2="24" y2="9"/><ellipse cx="42" cy="25" rx="7" ry="5" transform="rotate(-18 42 25)"/><line x1="48" y1="24" x2="48" y2="4"/><ellipse cx="65" cy="20" rx="7" ry="5" transform="rotate(-18 65 20)"/><line x1="71" y1="19" x2="71" y2="3"/><ellipse cx="84" cy="30" rx="7" ry="5" transform="rotate(-18 84 30)"/><line x1="90" y1="29" x2="90" y2="7"/></g></svg>
+  </div>
+  <section class="ui">
+    <h1 id="main-title" class="dynamic-title"></h1><div id="stage-banner" class="stage-banner"></div>
+    <div id="countdown" class="countdown" aria-live="polite">
+      <div class="unit"><div id="days" class="num">00</div><div class="label">DAYS</div></div>
+      <div class="unit"><div id="hours" class="num">00</div><div class="label">HOURS</div></div>
+      <div class="unit"><div id="minutes" class="num">00</div><div class="label">MIN</div></div>
+      <div class="unit"><div id="seconds" class="num">00</div><div class="label">SEC</div></div>
     </div>
-    <div class="palm-right" aria-hidden="true">
-      <i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i>
+    <div class="outlook-panel"><p class="outlook-label">TIME REMAINING</p><p id="rotating-message" class="subtitle">My countdown to freedom. Your countdown to figuring it out.</p></div>
+    <p class="date">Thursday, December 10, 2026</p>
+    <div class="milestones"><div class="milestone-track">
+      <div class="milestone" data-threshold="30"><div class="milestone-dot"></div><div class="milestone-title">30 DAYS</div><div class="milestone-copy">Knowledge transfer window is closing.</div></div>
+      <div class="milestone" data-threshold="10"><div class="milestone-dot"></div><div class="milestone-title">10 DAYS</div><div class="milestone-copy">Please make other arrangements.</div></div>
+      <div class="milestone" data-threshold="5"><div class="milestone-dot"></div><div class="milestone-title">5 DAYS</div><div class="milestone-copy">Succession planning is now a you problem.</div></div>
+      <div class="milestone" data-threshold="1"><div class="milestone-dot"></div><div class="milestone-title">24 HOURS</div><div class="milestone-copy">Final business day. All sales final.</div></div>
+      <div class="milestone" data-threshold="0"><div class="milestone-dot"></div><div class="milestone-title">RETIREMENT</div><div class="milestone-copy">No longer my problem.</div></div>
+    </div></div>
+    <p class="tagline">PLEASE PLAN ACCORDINGLY.</p>
+    <div id="finished" class="finished">
+      <div class="retired-title">RETIRED</div>
+      <div class="closed">34 YEARS. I’M OFFICIALLY OUT OF SCOPE.</div>
+      <div class="fine-print">For questions, concerns, escalations, emergencies, access issues, audits, RCSAs, control testing, reporting, “quick calls,” and requests to “please do the needful”…</div>
+      <div class="anyone-else">Please contact literally anyone else.</div>
+      <div class="left-building">Joe has left the building.</div>
+      <div class="final-status">STATUS: SOMEONE ELSE HAS THIS. PROBABLY.</div>
     </div>
-
-    <section class="content">
-      <div class="icon" aria-hidden="true" style="display:none">🌴</div>
-      <h1 id="main-title" class="dynamic-title"></h1>
-      <div id="stage-banner" class="stage-banner" aria-live="polite"></div>
-
-      <div id="countdown" class="countdown" aria-live="polite">
-        <div class="unit"><div id="days" class="num">00</div><div class="label">DAYS</div></div>
-        <div class="colon">:</div>
-        <div class="unit"><div id="hours" class="num">00</div><div class="label">HOURS</div></div>
-        <div class="colon">:</div>
-        <div class="unit"><div id="minutes" class="num">00</div><div class="label">MIN</div></div>
-        <div class="colon">:</div>
-        <div class="unit"><div id="seconds" class="num">00</div><div class="label">SEC</div></div>
-      </div>
-
-      <div class="outlook-panel">
-        <p class="outlook-label">CURRENT OUTLOOK:</p>
-        <p id="rotating-message" class="subtitle">Until “please do the needful” is no longer my action item.</p>
-      </div>
-      <p class="date">Thursday, December 10, 2026</p>
-
-      <div class="milestones" aria-label="Retirement milestones">
-        <div class="milestone-track">
-          <div class="milestone" data-threshold="30">
-            <div class="milestone-dot"></div>
-            <div class="milestone-title">30 DAYS</div>
-            <div class="milestone-copy">Knowledge transfer window is closing.</div>
-          </div>
-          <div class="milestone" data-threshold="10">
-            <div class="milestone-dot"></div>
-            <div class="milestone-title">10 DAYS</div>
-            <div class="milestone-copy">Please make other arrangements.</div>
-          </div>
-          <div class="milestone" data-threshold="5">
-            <div class="milestone-dot"></div>
-            <div class="milestone-title">5 DAYS</div>
-            <div class="milestone-copy">Succession planning is now a you problem.</div>
-          </div>
-          <div class="milestone" data-threshold="1">
-            <div class="milestone-dot"></div>
-            <div class="milestone-title">24 HOURS</div>
-            <div class="milestone-copy">Final business day. All sales final.</div>
-          </div>
-          <div class="milestone" data-threshold="0">
-            <div class="milestone-dot"></div>
-            <div class="milestone-title">RETIREMENT</div>
-            <div class="milestone-copy">No longer my problem.</div>
-          </div>
-        </div>
-      </div>
-
-      <p class="tagline">NO LONGER MY PROBLEM.</p>
-      <div id="finished" class="finished">
-        <div class="retired-title">🌴 RETIRED 🌴</div>
-        <div class="closed">THIS ACTION ITEM HAS BEEN PERMANENTLY CLOSED</div>
-        <div class="fine-print">For questions, concerns, escalations, emergencies, audits, RCSAs, control testing, reporting, “quick calls,” and requests to “please do the needful”…</div>
-        <div class="anyone-else">Please contact literally anyone else.</div>
-        <div class="left-chat">Joe has left the chat. &nbsp;•&nbsp; Status: No longer accepting feedback.</div>
-      </div>
-    </section>
-  </main>
-
+  </section>
+</main>
 <script>
-(function () {
-  // December 10, 2026 is Central Standard Time (UTC-6).
-  const target = new Date('2026-12-10T12:00:00-06:00').getTime();
-  const ids = {
-    days: document.getElementById('days'),
-    hours: document.getElementById('hours'),
-    minutes: document.getElementById('minutes'),
-    seconds: document.getElementById('seconds')
-  };
-  const frame = document.getElementById('frame');
-  const mainTitle = document.getElementById('main-title');
-  const stageBanner = document.getElementById('stage-banner');
-  const countdown = document.getElementById('countdown');
-  const finished = document.getElementById('finished');
-  const rotatingMessage = document.getElementById('rotating-message');
-  const milestones = Array.from(document.querySelectorAll('.milestone'));
-
-
-  function applyStage(daysRemaining) {
-    frame.classList.remove('stage-30', 'stage-10', 'stage-5', 'stage-final');
-    mainTitle.textContent = '';
-    stageBanner.textContent = '';
-
-    if (daysRemaining <= 1) {
-      frame.classList.add('stage-final');
-      mainTitle.textContent = 'FINAL BUSINESS DAY';
-      stageBanner.textContent = 'ALL SALES FINAL • NO RETURNS • NO NEW ACTION ITEMS';
-    } else if (daysRemaining <= 5) {
-      frame.classList.add('stage-5');
-      stageBanner.textContent = 'SUCCESSION PLANNING WINDOW: RAPIDLY CLOSING';
-    } else if (daysRemaining <= 10) {
-      frame.classList.add('stage-10');
-      stageBanner.textContent = 'PLEASE BEGIN MAKING OTHER ARRANGEMENTS';
-    } else if (daysRemaining <= 30) {
-      frame.classList.add('stage-30');
-      stageBanner.textContent = 'KNOWLEDGE TRANSFER WINDOW IS NOW CLOSING';
-    }
-  }
-
-  function updateMilestones(daysRemaining) {
-    milestones.forEach((el) => {
-      const threshold = Number(el.dataset.threshold);
-      el.classList.remove('active', 'passed');
-      if (daysRemaining <= threshold) el.classList.add('passed');
-    });
-
-    let activeThreshold = null;
-    if (daysRemaining <= 0) activeThreshold = 0;
-    else if (daysRemaining <= 1) activeThreshold = 1;
-    else if (daysRemaining <= 5) activeThreshold = 5;
-    else if (daysRemaining <= 10) activeThreshold = 10;
-    else if (daysRemaining <= 30) activeThreshold = 30;
-
-    if (activeThreshold !== null) {
-      const active = milestones.find(el => Number(el.dataset.threshold) === activeThreshold);
-      if (active) active.classList.add('active');
-    }
-  }
-
-  const standardMessages = [
-    'Until “please do the needful” is no longer my action item.',
-    'Until every “one quick question” becomes someone else\'s problem.',
-    'Until “can you jump on a quick call?” gets an automatic NO.',
-    'Until “please advise” becomes someone else\'s responsibility.',
-    'My countdown to freedom. Your countdown to figuring it out.'
-  ];
-
-  const thirtyDayMessages = [
-    ...standardMessages,
-    'Knowledge transfer window is closing.',
-    'Succession planning is strongly encouraged at this time.'
-  ];
-
-  const tenDayMessages = [
-    ...standardMessages,
-    'Please begin identifying someone else to ask.',
-    'Future action items should be routed literally anywhere else.'
-  ];
-
-  const fiveDayMessages = [
-    ...standardMessages,
-    'Your lack of succession planning is rapidly becoming a you problem.',
-    'Escalation path update: not me.'
-  ];
-
-  const finalDayMessages = [
-    'FINAL BUSINESS DAY — ALL SALES FINAL. NO RETURNS.',
-    'Please begin identifying someone else to ask.',
-    'Escalation path update: not me.',
-    'My countdown to freedom. Your countdown to figuring it out.',
-    'Any remaining action items are about to become historical artifacts.'
-  ];
-
-  let messages = standardMessages;
-  let messageIndex = 0;
-
-  function pad2(n) { return String(n).padStart(2, '0'); }
-
-  function update() {
-    const now = Date.now();
-    let diff = target - now;
-
-    if (diff > 0) {
-      const daysRemaining = diff / (24 * 60 * 60 * 1000);
-      applyStage(daysRemaining);
-      updateMilestones(daysRemaining);
-      if (daysRemaining <= 1) messages = finalDayMessages;
-      else if (daysRemaining <= 5) messages = fiveDayMessages;
-      else if (daysRemaining <= 10) messages = tenDayMessages;
-      else if (daysRemaining <= 30) messages = thirtyDayMessages;
-      else messages = standardMessages;
-      if (messageIndex >= messages.length) messageIndex = 0;
-    }
-
-    if (diff <= 0) {
-      updateMilestones(0);
-      Object.values(ids).forEach(el => el.textContent = '00');
-      countdown.style.display = 'none';
-      rotatingMessage.style.display = 'none';
-      document.querySelector('.date').style.display = 'none';
-      document.querySelector('.outlook-label').style.display = 'none';
-      stageBanner.style.display = 'none';
-      document.querySelector('.milestones').style.display = 'none';
-      document.querySelector('.tagline').style.display = 'none';
-      document.querySelector('.icon').style.display = 'none';
-      document.querySelector('h1').style.display = 'none';
-      finished.style.display = 'block';
-      return;
-    }
-
-    const day = 24 * 60 * 60 * 1000;
-    const hour = 60 * 60 * 1000;
-    const minute = 60 * 1000;
-
-    const days = Math.floor(diff / day);
-    diff %= day;
-    const hours = Math.floor(diff / hour);
-    diff %= hour;
-    const minutes = Math.floor(diff / minute);
-    diff %= minute;
-    const seconds = Math.floor(diff / 1000);
-
-    ids.days.textContent = String(days).padStart(2, '0');
-    ids.hours.textContent = pad2(hours);
-    ids.minutes.textContent = pad2(minutes);
-    ids.seconds.textContent = pad2(seconds);
-  }
-
-  function rotateMessage() {
-    if (!rotatingMessage) return;
-    rotatingMessage.classList.add('changing');
-
-    setTimeout(() => {
-      messageIndex = (messageIndex + 1) % messages.length;
-      rotatingMessage.textContent = messages[messageIndex];
-      rotatingMessage.classList.remove('changing');
-    }, 450);
-  }
-
-  update();
-  setInterval(update, 1000);
-  setInterval(rotateMessage, 4000);
+(()=>{
+const target=new Date('2026-12-10T12:00:00-06:00').getTime(),frame=document.getElementById('frame'),title=document.getElementById('main-title'),banner=document.getElementById('stage-banner'),countdown=document.getElementById('countdown'),finished=document.getElementById('finished'),msg=document.getElementById('rotating-message'),milestones=[...document.querySelectorAll('.milestone')],ids=['days','hours','minutes','seconds'].reduce((o,k)=>(o[k]=document.getElementById(k),o),{});
+const standard=[
+'My countdown to freedom. Your countdown to figuring it out.',
+'Until “can you jump on a quick call?” gets an automatic NO.',
+'Until “please do the needful” is no longer my action item.',
+'Until “please advise” becomes someone else’s responsibility.',
+'Until every “one quick question” becomes someone else’s problem.',
+'Until emails to my inbox become undeliverable.',
+'Until your lack of planning is no longer my emergency.',
+'Until my Slack profile says “Deactivated account.”',
+'Until “I’m not able to access…” sends someone else down the troubleshooting rabbit hole.'
+];
+const thirty=[...standard,'Knowledge transfer window is closing.','Succession planning is strongly encouraged at this time.'];
+const ten=[...standard,'Please begin identifying someone else to ask.','Future action items should be routed literally anywhere else.'];
+const five=[...standard,'Your lack of succession planning is rapidly becoming a you problem.','Escalation path update: not me.'];
+const finalDay=['FINAL BUSINESS DAY — ALL SALES FINAL. NO RETURNS.','Please begin identifying someone else to ask.','Escalation path update: not me.','My countdown to freedom. Your countdown to figuring it out.','Any remaining action items are about to become historical artifacts.'];
+let messages=standard,index=0,retired=false;
+function stage(d){frame.classList.remove('stage-30','stage-10','stage-5','stage-final');title.textContent='';banner.textContent='';if(d<=1){frame.classList.add('stage-final');title.textContent='FINAL BUSINESS DAY';banner.textContent='ALL SALES FINAL • NO RETURNS • NO NEW ACTION ITEMS'}else if(d<=5){frame.classList.add('stage-5');banner.textContent='SUCCESSION PLANNING WINDOW: RAPIDLY CLOSING'}else if(d<=10){frame.classList.add('stage-10');banner.textContent='PLEASE BEGIN MAKING OTHER ARRANGEMENTS'}else if(d<=30){frame.classList.add('stage-30');banner.textContent='KNOWLEDGE TRANSFER WINDOW IS NOW CLOSING'}}
+function marks(d){milestones.forEach(e=>{let t=+e.dataset.threshold;e.classList.remove('active','passed');if(d<=t)e.classList.add('passed')});let a=d<=0?0:d<=1?1:d<=5?5:d<=10?10:d<=30?30:null;if(a!==null){let e=milestones.find(x=>+x.dataset.threshold===a);if(e)e.classList.add('active')}}
+function finish(){retired=true;document.querySelectorAll('.cinematic-subtitle,.chair-edit,.tumbler-edit,.dynamic-title,.stage-banner,.countdown,.outlook-panel,.date,.milestones,.tagline').forEach(e=>e.style.display='none');finished.style.display='block'}
+function update(){let diff=target-Date.now();if(diff<=0){marks(0);Object.values(ids).forEach(e=>e.textContent='00');finish();return}let drem=diff/86400000;stage(drem);marks(drem);messages=drem<=1?finalDay:drem<=5?five:drem<=10?ten:drem<=30?thirty:standard;if(index>=messages.length)index=0;let d=Math.floor(diff/86400000);diff%=86400000;let h=Math.floor(diff/3600000);diff%=3600000;let m=Math.floor(diff/60000);diff%=60000;let s=Math.floor(diff/1000);ids.days.textContent=String(d).padStart(2,'0');ids.hours.textContent=String(h).padStart(2,'0');ids.minutes.textContent=String(m).padStart(2,'0');ids.seconds.textContent=String(s).padStart(2,'0')}
+function rotate(){if(retired)return;msg.classList.add('changing');setTimeout(()=>{index=(index+1)%messages.length;msg.textContent=messages[index];msg.classList.remove('changing')},400)}
+update();setInterval(update,1000);setInterval(rotate,5000);
 })();
 </script>
-</body>
-</html>
+</body></html>
