@@ -11,13 +11,8 @@
 body::before{content:"";position:fixed;inset:-3vmax;background:url("retirement-background.png") center/cover no-repeat;filter:blur(20px) brightness(.42);transform:scale(1.08);z-index:-2}body::after{content:"";position:fixed;inset:0;background:rgba(1,8,15,.25);z-index:-1}
 .stage{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(100vw,150vh);aspect-ratio:3/2;overflow:hidden;background:url("retirement-background.png") center/100% 100% no-repeat;box-shadow:0 0 70px rgba(0,0,0,.45);container-type:size}
 .stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,15,30,.03),rgba(0,0,0,.08));z-index:1}
-/* Replace only the baked wording while preserving the original artwork. */
-.bg-subtitle{position:absolute;z-index:3;left:27.4%;top:30.5%;width:45.2%;height:4.1%;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,rgba(6,35,61,.02),rgba(9,43,70,.88) 9%,rgba(8,40,67,.94) 50%,rgba(9,43,70,.88) 91%,rgba(6,35,61,.02));font-size:1.65cqw;font-weight:800;letter-spacing:.19em;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.4)}
-.chair-patch{position:absolute;z-index:3;left:7.0%;top:64.0%;width:13.8%;height:13.2%;transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;text-align:center;background:rgba(31,17,11,.87);border-radius:2%;box-shadow:inset 0 0 16px rgba(0,0,0,.25);color:#f4a84e;font-family:Georgia,"Times New Roman",serif;font-size:1.05cqw;line-height:1.48;letter-spacing:.08em;text-transform:uppercase}
-.tumbler-patch{position:absolute;z-index:3;left:33.55%;top:71.0%;width:4.35%;height:10.5%;border-radius:10% 10% 16% 16%;background:linear-gradient(90deg,rgba(45,47,47,.93),rgba(190,190,186,.95) 36%,rgba(225,224,217,.96) 53%,rgba(112,112,110,.95) 76%,rgba(42,43,43,.94));display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 5px rgba(0,0,0,.4)}
-.tumbler-patch svg{width:82%;height:60%;filter:drop-shadow(0 1px 1px rgba(255,255,255,.18))}
 .ui{position:absolute;inset:0;z-index:4;text-align:center;pointer-events:none}.stage-banner{position:absolute;left:50%;top:34.4%;transform:translateX(-50%);width:72%;font-size:.92cqw;font-weight:900;letter-spacing:.18em;text-transform:uppercase;color:transparent;text-shadow:0 2px 8px rgba(0,0,0,.35);transition:.25s}.stage.stage-30 .stage-banner,.stage.stage-10 .stage-banner,.stage.stage-5 .stage-banner,.stage.stage-final .stage-banner{color:rgba(255,245,220,.95)}
-.dynamic-title{display:none;position:absolute;left:50%;top:7.5%;transform:translateX(-50%);width:80%;font-size:4.1cqw;font-weight:950;letter-spacing:.05em;text-shadow:0 3px 14px rgba(0,0,0,.45)}.stage.stage-final .dynamic-title{display:block}.stage.stage-final .bg-subtitle{opacity:.12}
+.dynamic-title{display:none;position:absolute;left:50%;top:33.0%;transform:translateX(-50%);width:80%;font-size:4.1cqw;font-weight:950;letter-spacing:.05em;text-shadow:0 3px 14px rgba(0,0,0,.45)}.stage.stage-final .dynamic-title{display:block}
 .countdown{position:absolute;left:50%;top:36%;transform:translateX(-50%);width:52%;display:flex;justify-content:center;gap:1.05%;}.unit{width:23%;height:11.2cqh;min-height:0;border-radius:1.15cqw;background:linear-gradient(180deg,rgba(9,19,31,.68),rgba(29,22,28,.68));border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 24px rgba(0,0,0,.2),inset 0 1px rgba(255,255,255,.06);backdrop-filter:blur(4px);display:flex;flex-direction:column;align-items:center;justify-content:center}.num{font-size:4.35cqw;line-height:.88;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums}.label{margin-top:1.05cqh;font-size:.78cqw;font-weight:800;letter-spacing:.14em}.stage.stage-final .unit{animation:pulse 2.3s ease-in-out infinite;border-color:rgba(255,205,110,.45)}
 .message-panel{position:absolute;left:50%;top:49.2%;transform:translateX(-50%);width:57%;min-height:9.7%;padding:1.15cqh 1.5cqw 1.1cqh;border-radius:1.15cqw;background:rgba(8,17,28,.62);border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 25px rgba(0,0,0,.16);backdrop-filter:blur(5px)}.message-label{font-size:.76cqw;font-weight:800;letter-spacing:.23em;text-transform:uppercase;color:rgba(255,255,255,.83);margin-bottom:.8cqh}.message{font-size:1.43cqw;line-height:1.15;transition:opacity .38s,transform .38s}.message.changing{opacity:0;transform:translateY(.7cqh)}
 .date{position:absolute;top:60.2%;left:50%;transform:translateX(-50%);font-size:1.32cqw;font-style:italic;text-shadow:0 2px 8px rgba(0,0,0,.35)}
@@ -31,22 +26,6 @@ body::before{content:"";position:fixed;inset:-3vmax;background:url("retirement-b
 </head>
 <body>
 <main id="stage" class="stage" role="main" aria-label="Joe's retirement countdown">
-  <div class="bg-subtitle">34 YEARS. THAT’LL DO.</div>
-  <div class="chair-patch">NO EMAILS<br>NO MEETINGS<br>NO ACTION ITEMS<br>NO PROBLEM</div>
-  <div class="tumbler-patch" aria-label="Musical notes D G A F">
-    <svg viewBox="0 0 120 82" aria-hidden="true">
-      <g stroke="#111" stroke-width="2" fill="none" opacity=".95">
-        <line x1="8" y1="20" x2="112" y2="20"/><line x1="8" y1="30" x2="112" y2="30"/><line x1="8" y1="40" x2="112" y2="40"/><line x1="8" y1="50" x2="112" y2="50"/><line x1="8" y1="60" x2="112" y2="60"/>
-      </g>
-      <!-- D4, G4, A4, F4 in that order; no letters are displayed -->
-      <g fill="#111" stroke="#111" stroke-width="2">
-        <ellipse cx="22" cy="66" rx="7" ry="5" transform="rotate(-18 22 66)"/><line x1="28" y1="64" x2="28" y2="25"/>
-        <ellipse cx="47" cy="50" rx="7" ry="5" transform="rotate(-18 47 50)"/><line x1="53" y1="48" x2="53" y2="16"/>
-        <ellipse cx="73" cy="45" rx="7" ry="5" transform="rotate(-18 73 45)"/><line x1="79" y1="43" x2="79" y2="12"/>
-        <ellipse cx="98" cy="55" rx="7" ry="5" transform="rotate(-18 98 55)"/><line x1="104" y1="53" x2="104" y2="20"/>
-      </g>
-    </svg>
-  </div>
 
   <section class="ui">
     <div id="dynamic-title" class="dynamic-title">FINAL BUSINESS DAY</div>
@@ -94,7 +73,7 @@ body::before{content:"";position:fixed;inset:-3vmax;background:url("retirement-b
   'Until “please advise” becomes someone else’s responsibility.',
   'Until every “one quick question” becomes someone else’s problem.',
   'Until emails to my inbox become undeliverable.',
-  'Until your lack of planning is no longer my emergency.',
+  'Until everyone else’s lack of planning is no longer my emergency.',
   'Until my Slack profile says “Deactivated account.”',
   'Until “I’m not able to access…” sends someone else down the troubleshooting rabbit hole.'
  ];
@@ -105,7 +84,7 @@ body::before{content:"";position:fixed;inset:-3vmax;background:url("retirement-b
  let pool=standard,index=0;
  function stageFor(days){stage.classList.remove('stage-30','stage-10','stage-5','stage-final');banner.textContent='';if(days<=1){stage.classList.add('stage-final');banner.textContent='ALL SALES FINAL • NO RETURNS • NO NEW ACTION ITEMS';pool=m1}else if(days<=5){stage.classList.add('stage-5');banner.textContent='SUCCESSION PLANNING WINDOW: RAPIDLY CLOSING';pool=m5}else if(days<=10){stage.classList.add('stage-10');banner.textContent='PLEASE BEGIN MAKING OTHER ARRANGEMENTS';pool=m10}else if(days<=30){stage.classList.add('stage-30');banner.textContent='KNOWLEDGE TRANSFER WINDOW IS NOW CLOSING';pool=m30}else pool=standard;if(index>=pool.length)index=0}
  function mark(days){milestones.forEach(e=>{e.classList.remove('active','passed');if(days<=+e.dataset.threshold)e.classList.add('passed')});let t=null;if(days<=0)t=0;else if(days<=1)t=1;else if(days<=5)t=5;else if(days<=10)t=10;else if(days<=30)t=30;if(t!==null){const e=milestones.find(x=>+x.dataset.threshold===t);if(e)e.classList.add('active')}}
- function finish(){document.getElementById('countdown').style.display='none';document.getElementById('message-panel').style.display='none';document.getElementById('date').style.display='none';document.getElementById('milestones').style.display='none';document.getElementById('tagline').style.display='none';banner.style.display='none';document.querySelector('.bg-subtitle').style.display='none';document.getElementById('dynamic-title').style.display='none';document.getElementById('finished').style.display='block'}
+ function finish(){document.getElementById('countdown').style.display='none';document.getElementById('message-panel').style.display='none';document.getElementById('date').style.display='none';document.getElementById('milestones').style.display='none';document.getElementById('tagline').style.display='none';banner.style.display='none';document.getElementById('dynamic-title').style.display='none';document.getElementById('finished').style.display='block'}
  function update(){let diff=target-Date.now();if(diff<=0){mark(0);finish();return}const day=86400000;const daysR=diff/day;stageFor(daysR);mark(daysR);ids.d.textContent=String(Math.floor(diff/day)).padStart(2,'0');diff%=day;ids.h.textContent=String(Math.floor(diff/3600000)).padStart(2,'0');diff%=3600000;ids.m.textContent=String(Math.floor(diff/60000)).padStart(2,'0');diff%=60000;ids.s.textContent=String(Math.floor(diff/1000)).padStart(2,'0')}
  function rotate(){if(document.getElementById('finished').style.display==='block')return;msg.classList.add('changing');setTimeout(()=>{index=(index+1)%pool.length;msg.textContent=pool[index];msg.classList.remove('changing')},380)}
  update();setInterval(update,1000);setInterval(rotate,4800);
